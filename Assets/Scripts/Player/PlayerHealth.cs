@@ -1,18 +1,22 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth :
     MonoBehaviour,
     IDamageable
 {
-    [SerializeField] private int _maxHP = 10;
-    [SerializeField] private int _hp;
+    [SerializeField] private float _maxHP = 10f;
+    [SerializeField] private float _hp;
+
+    [Header("UI")]
+    [SerializeField] private Image _hpBar;
 
     private void Awake()
     {
         _hp = _maxHP;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (damage <= 0)
         {
@@ -25,6 +29,7 @@ public class PlayerHealth :
             0,
             _maxHP
         );
+        UpdateLifeBar();
 
         if (_hp == 0)
         {
@@ -32,8 +37,15 @@ public class PlayerHealth :
         }
     }
 
-    public void Die()
+    private void Die()
     {
         Debug.Log("Die");
+    }
+
+    private void UpdateLifeBar()
+    {
+        float lifePercentage = _hp / _maxHP;
+
+        _hpBar.fillAmount = lifePercentage;
     }
 }
